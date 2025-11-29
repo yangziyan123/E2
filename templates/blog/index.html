@@ -1,0 +1,15 @@
+{% extends "base_front.html" %}
+
+{% block title %}博客首页{% endblock %}
+
+{% block content %}
+<h2>最新文章</h2>
+<ul>
+    {% for post in posts %}
+        <li>
+            <a href="{{ url_for('blog.post_detail', post_id=post.id) }}">{{ post.title }}</a>
+            <p>{{ post.summary }}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

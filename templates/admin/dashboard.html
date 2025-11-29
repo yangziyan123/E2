@@ -1,0 +1,12 @@
+{% extends "base_admin.html" %}
+
+{% block title %}后台首页{% endblock %}
+
+{% block content %}
+<h2>统计数据</h2>
+<ul>
+    <li>文章总数：{{ stats.post_count }}</li>
+    <li>草稿数量：{{ stats.draft_count }}</li>
+    <li>用户数量：{{ stats.user_count }}</li>
+</ul>
+{% endblock %}

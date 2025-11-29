@@ -1,0 +1,34 @@
+{% extends "base_admin.html" %}
+
+{% block title %}
+{% if mode == "new" %}新增文章{% else %}编辑文章{% endif %}
+{% endblock %}
+
+{% block content %}
+<h2>
+{% if mode == "new" %}新增文章{% else %}编辑文章{% endif %}
+</h2>
+
+<form method="post">
+    <p>
+        标题：<br>
+        <input type="text" name="title" value="{{ post.title if post else '' }}" style="width: 400px;">
+    </p>
+
+    <p>
+        内容：<br>
+        <textarea name="content" rows="10" cols="80">{{ post.content if post else '' }}</textarea>
+    </p>
+
+    <p>
+        状态：<br>
+        <select name="status">
+            <option value="published" {% if post and post.status=='published' %}selected{% endif %}>已发布</option>
+            <option value="draft" {% if post and post.status=='draft' %}selected{% endif %}>草稿</option>
+        </select>
+    </p>
+
+    <button type="submit">保存</button>
+</form>
+
+{% endblock %}

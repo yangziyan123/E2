@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}后台管理{% endblock %}</title>
+</head>
+<body>
+<header>
+    <h1>博客后台管理系统</h1>
+    <nav>
+        <a href="{{ url_for('admin.dashboard') }}">仪表盘</a> |
+        <a href="{{ url_for('admin.admin_post_list') }}">文章管理</a> |
+        <a href="{{ url_for('admin.profile') }}">个人信息</a> |
+        <a href="{{ url_for('admin.settings') }}">设置</a> |
+        <a href="{{ url_for('auth.logout') }}">退出登录</a>
+    </nav>
+</header>
+
+<hr>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<hr>
+
+<footer>
+    <p>后台管理 © 2025</p>
+</footer>
+</body>
+</html>
