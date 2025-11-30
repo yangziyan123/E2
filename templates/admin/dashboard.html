@@ -2,11 +2,113 @@
 
 {% block title %}后台首页{% endblock %}
 
+{% block style %}
+<style>
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        margin-top: 20px;
+    }
+
+    .card {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 14px rgba(0,0,0,0.12);
+    }
+
+    .card-title {
+        font-size: 16px;
+        color: #7f8c8d;
+        margin-bottom: 8px;
+    }
+
+    .card-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: #2c3e50;
+    }
+
+    .section-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #34495e;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .recent-list {
+        margin-top: 30px;
+    }
+
+    .recent-item {
+        padding: 15px 20px;
+        border-bottom: 1px solid #ecf0f1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .recent-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #34495e;
+    }
+
+    .recent-status {
+        font-size: 14px;
+        color: #3498db;
+    }
+
+</style>
+{% endblock %}
+
 {% block content %}
-<h2>统计数据</h2>
-<ul>
-    <li>文章总数：{{ stats.post_count }}</li>
-    <li>草稿数量：{{ stats.draft_count }}</li>
-    <li>用户数量：{{ stats.user_count }}</li>
-</ul>
+
+<div class="section-title">数据概览</div>
+
+<div class="dashboard-grid">
+
+    <div class="card">
+        <div class="card-title">文章总数</div>
+        <div class="card-value">{{ stats.post_count }}</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">草稿数量</div>
+        <div class="card-value">{{ stats.draft_count }}</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">用户数量</div>
+        <div class="card-value">{{ stats.user_count }}</div>
+    </div>
+
+</div>
+
+
+<div class="section-title">最近文章</div>
+
+<div class="card">
+    <div class="recent-list">
+
+        {% for post in recent_posts %}
+        <div class="recent-item">
+            <div class="recent-title">{{ post.title }}</div>
+            <div class="recent-status">{{ post.status }}</div>
+        </div>
+        {% else %}
+        <p style="padding:20px; color:#7f8c8d;">暂无文章。</p>
+        {% endfor %}
+
+    </div>
+</div>
+
 {% endblock %}

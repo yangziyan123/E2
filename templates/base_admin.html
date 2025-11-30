@@ -3,29 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}后台管理{% endblock %}</title>
+    <style>
+        /* 关键部分：让 footer 永远贴底 */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background: #f5f7fa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .admin-header {
+            background: #2c3e50;
+            padding: 16px 30px;
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .admin-container {
+            flex: 1;  /* ★ 关键：拉伸内容区、把 footer 顶到底部 */
+            width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #95a5a6;
+        }
+
+        .admin-header {
+            background: #2c3e50;
+            padding: 16px 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-title {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .admin-nav a {
+            color: #ecf0f1;
+            margin-left: 25px;
+            text-decoration: none;
+            font-size: 15px;
+            transition: color .2s ease;
+        }
+
+        .admin-nav a:hover {
+            color: #3498db;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+        .btn-primary:hover { background: #2980b9; }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        .btn-danger:hover { background: #c0392b; }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 25px;
+        }
+    </style>
+
+    {% block style %}{% endblock %}
 </head>
 <body>
-<header>
-    <h1>博客后台管理系统</h1>
-    <nav>
-        <a href="{{ url_for('admin.dashboard') }}">仪表盘</a> |
-        <a href="{{ url_for('admin.admin_post_list') }}">文章管理</a> |
-        <a href="{{ url_for('admin.profile') }}">个人信息</a> |
-        <a href="{{ url_for('admin.settings') }}">设置</a> |
-        <a href="{{ url_for('auth.logout') }}">退出登录</a>
-    </nav>
-</header>
 
-<hr>
+<div class="admin-header">
+    <div class="admin-title">博客后台管理系统</div>
+    <div class="admin-nav">
+        <a href="{{ url_for('admin.dashboard') }}">首页</a>
+        <a href="{{ url_for('admin.admin_post_list') }}">文章管理</a>
+        <a href="{{ url_for('admin.create_post') }}">新建文章</a>
+        <a href="{{ url_for('admin.settings') }}">设置</a>
+        <a href="{{ url_for('auth.logout') }}">退出</a>
+    </div>
+</div>
 
-<main>
+<div class="admin-container">
     {% block content %}{% endblock %}
-</main>
+</div>
 
-<hr>
+<footer>© 2025 后台管理系统</footer>
 
-<footer>
-    <p>后台管理 © 2025</p>
-</footer>
 </body>
 </html>

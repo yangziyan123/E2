@@ -17,8 +17,9 @@ def login():
 
     return render_template('auth/login.html')
 
-@auth_bp.route('/logout')
+@auth_bp.route("/logout")
 def logout():
-    session.pop('user', None)
-    flash('您已成功登出。', 'success')
-    return redirect(url_for('auth.login'))
+    session.clear()           # 清除会话
+    session.pop('_flashes', None)  # 清空所有旧的 flash 消息
+    flash("您已成功登出。")
+    return redirect(url_for("auth.login"))

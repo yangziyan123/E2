@@ -12,8 +12,7 @@ def index():
 
 @blog_bp.route('/posts')
 def posts():
-    # TODO: 获取并显示博客列表
-    return "前台博客列表页面"
+    return render_template("blog/posts.html")
 
 @blog_bp.route('/post/<int:post_id>')
 def post_detail(post_id):

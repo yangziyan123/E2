@@ -1,15 +1,154 @@
 {% extends "base_front.html" %}
 
-{% block title %}博客首页{% endblock %}
+{% block title %}首页{% endblock %}
+
+{% block style %}
+<style>
+    /* 整体布局：三栏 */
+    .layout {
+        display: grid;
+        grid-template-columns: 1fr 4fr 1fr;
+        gap: 40px;
+        margin-top: 30px;
+    }
+
+    /* 左右侧栏通用样式 */
+    .sidebar-box {
+        background: white;
+        padding: 20px 25px;
+        border-radius: 14px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        height: fit-content; /* 根据内容自动高度 */
+    }
+
+    .sidebar-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #2c3e50;
+    }
+
+    .sidebar-box a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .sidebar-box a:hover {
+        text-decoration: underline;
+    }
+
+    /* 中间内容区的结构不变 */
+    .hero {
+        background: linear-gradient(135deg, #4e73df, #1cc88a);
+        padding: 60px 50px;
+        border-radius: 14px;
+        color: white;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        margin-bottom: 40px;
+    }
+
+    .hero-title {
+        font-size: 34px;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .hero-sub {
+        font-size: 17px;
+        opacity: .9;
+        line-height: 1.6;
+    }
+
+    .section-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 22px;
+        color: #2c3e50;
+    }
+
+    .home-posts {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .home-card {
+        padding: 22px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        transition: all .2s ease;
+        cursor: pointer;
+    }
+    .home-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+
+    .home-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 8px;
+    }
+
+    .home-excerpt {
+        color: #555;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .home-meta {
+        margin-top: 12px;
+        font-size: 12px;
+        color: #aaa;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<h2>最新文章</h2>
-<ul>
-    {% for post in posts %}
-        <li>
-            <a href="{{ url_for('blog.post_detail', post_id=post.id) }}">{{ post.title }}</a>
-            <p>{{ post.summary }}</p>
-        </li>
-    {% endfor %}
-</ul>
+
+<!-- 三栏整体布局 -->
+<div class="layout">
+
+    <!-- 左侧栏 — 摄影网站推广 -->
+    <div class="sidebar-box">
+        <div class="sidebar-title">我的摄影网站 📷</div>
+        <p>欢迎来看我的摄影作品，记录光与影。</p>
+        <a href="https://chrisy.top" target="_blank">访问 chrisy.top →</a>
+    </div>
+
+    <!-- 中间内容（原首页内容） -->
+    <div>
+
+        <div class="hero">
+            <div class="hero-title">欢迎来到我的博客 👋</div>
+            <div class="hero-sub">
+                分享技术、记录生活、发布文章。<br>
+                这是一个简洁现代的个人博客系统。
+            </div>
+        </div>
+
+        <div class="section-title">最新文章</div>
+
+        <div class="home-posts" id="home-posts">
+            正在加载最新文章...
+        </div>
+
+    </div>
+
+    <!-- 右侧栏 — 抖音推广 -->
+    <div class="sidebar-box">
+        <div class="sidebar-title">我的抖音账号 🎬</div>
+        <p>欢迎关注我的抖音，分享更多有趣内容。</p>
+        <a href="https://www.douyin.com/user/MS4wLjABAAAAhCmQpGL8VXD1FOgVYcNtDt-0P_fDbIc4Y71uzFQ3FBVlecQHMw8xtAMwR7jGEHyZ?from_tab_name=main" target="_blank">前往抖音主页 →</a>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='home.js') }}"></script>
 {% endblock %}

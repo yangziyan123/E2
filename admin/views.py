@@ -1,19 +1,27 @@
 from flask import render_template, request, redirect, url_for, flash
 from . import admin_bp
-from models import Post, db
+from models import Post, db, User
 from utils import login_required
 
 @admin_bp.route('/')
 @admin_bp.route('/index')
 @login_required
 def dashboard():
-    # TODO 统计数据展示
     stats = {
-        'post_count': 150,
-        'draft_count': 45,
-        'user_count': 320,
+        'post_count': Post.query.count(),
+        'draft_count': Post.query.filter_by(status='draft').count(),
+        'user_count': User.query.count()
     }
-    return render_template('admin/dashboard.html',stats=stats)
+
+    # 最近 5 篇文章
+    recent_posts = Post.query.order_by(Post.created_at.desc()).limit(5).all()
+
+    return render_template(
+        'admin/dashboard.html',
+        stats=stats,
+        recent_posts=recent_posts
+    )
+
 
 @admin_bp.route('/posts')
 @login_required

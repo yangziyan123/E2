@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>文章详情</title>
+    <style>
+        /* Sticky footer 基础结构 */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background: #f5f7fa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #333;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 40px;
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* 主体内容：flex:1 表示占满空间 */
+        .container {
+            flex: 1;
+            width: 760px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .title {
+            font-size: 30px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #34495e;
+            white-space: pre-line;
+            word-break: break-all;    /* 新增：强制断行，防止长文本溢出 */
+        }
+
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #95a5a6;
+            font-size: 14px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a.back:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<header>文章详情</header>
+
+<div class="container">
+    <a class="back" href="/posts">← 返回文章列表</a>
+    <div id="title" class="title">加载中...</div>
+    <div id="meta" class="meta"></div>
+    <div id="content" class="content"></div>
+</div>
+
+<footer>© 2025 我的博客</footer>
+
+<script>
+    // 获取文章 ID
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    // 加载文章内容
+    fetch(`/api/posts/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("title").innerText = data.title;
+            document.getElementById("meta").innerText = "状态：" + data.status;
+            document.getElementById("content").innerText = data.content;
+        });
+</script>
+
+</body>
+</html>
