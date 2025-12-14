@@ -1,0 +1,59 @@
+{% extends "base_front.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block style %}
+<style>
+    .post-card {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 30px 35px;
+    }
+
+    .post-title {
+        font-size: 30px;
+        font-weight: 800;
+        color: #2c3e50;
+        margin: 0 0 10px 0;
+    }
+
+    .post-meta {
+        color: #7f8c8d;
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    .post-content {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #34495e;
+        white-space: pre-line;
+        word-break: break-word;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: 18px;
+        font-size: 14px;
+        color: #3498db;
+        text-decoration: none;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card post-card">
+    <a class="back-link" href="{{ url_for('blog.posts') }}">← 返回文章列表</a>
+    <h1 class="post-title">{{ post.title }}</h1>
+    <div class="post-meta">
+        状态：{{ post.status }}
+        {% if post.created_at %} | 创建于 {{ post.created_at.strftime("%Y-%m-%d %H:%M") }}{% endif %}
+        {% if post.updated_at %} | 更新于 {{ post.updated_at.strftime("%Y-%m-%d %H:%M") }}{% endif %}
+    </div>
+    <div class="post-content">{{ post.content }}</div>
+</div>
+{% endblock %}

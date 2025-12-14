@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // 点击跳转文章详情（你以后可以换成动态模板）
                 card.addEventListener("click", () => {
-                    window.location.href = "/static/post.html?id=" + post.id;
+                    window.location.href = "/post/" + post.id;
                 });
 
                 container.appendChild(card);

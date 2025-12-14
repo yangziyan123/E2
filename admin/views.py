@@ -1,11 +1,11 @@
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, session
 from . import admin_bp
 from models import Post, db, User
-from utils import login_required
+from utils import admin_required
 
 @admin_bp.route('/')
 @admin_bp.route('/index')
-@login_required
+@admin_required
 def dashboard():
     stats = {
         'post_count': Post.query.count(),
@@ -24,19 +24,19 @@ def dashboard():
 
 
 @admin_bp.route('/posts')
-@login_required
+@admin_required
 def admin_post_list():
     posts = Post.query.order_by(Post.created_at.desc()).all()
     return render_template('admin/post_list.html', posts=posts)
 
 @admin_bp.route("/post/new", methods=["GET", "POST"])
-@login_required
+@admin_required
 def create_post():
     if request.method == "POST":
         title = request.form.get("title")
         content = request.form.get("content")
         status = request.form.get("status", "published")
-        author_id = 1  # 系统只有一个管理员
+        author_id = session.get("user_id")
 
         if not title or not content:
             flash("标题和内容不能为空！", "warning")
@@ -53,7 +53,7 @@ def create_post():
 
 
 @admin_bp.route("/post/<int:post_id>/edit", methods=["GET", "POST"])
-@login_required
+@admin_required
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
 
@@ -69,7 +69,7 @@ def edit_post(post_id):
     return render_template("admin/post_edit.html", mode="edit", post=post)
 
 @admin_bp.route("/post/<int:post_id>/delete", methods=["POST"])
-@login_required
+@admin_required
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
     db.session.delete(post)

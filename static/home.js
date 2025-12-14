@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
 
                 card.addEventListener("click", () => {
-                    window.location.href = "/static/post.html?id=" + post.id;
+                    window.location.href = "/post/" + post.id;
                 });
 
                 container.appendChild(card);

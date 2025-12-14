@@ -2,7 +2,7 @@
 from flask import request, jsonify, session
 from . import api_bp
 from models import db, Post, User
-from utils import login_required
+from utils import api_login_required
 
 # -------------------
 # 登录 API
@@ -35,7 +35,13 @@ def api_logout():
 # -------------------
 @api_bp.route("/posts", methods=["GET"])
 def list_posts():
-    posts = Post.query.all()
+    query = Post.query.order_by(Post.created_at.desc())
+
+    # 未登录用户只看已发布
+    if "user_id" not in session:
+        query = query.filter_by(status="published")
+
+    posts = query.all()
     return jsonify([
         {
             "id": p.id,
@@ -48,14 +54,14 @@ def list_posts():
 
 
 @api_bp.route("/posts", methods=["POST"])
-@login_required
+@api_login_required
 def create_post():
     data = request.json
     post = Post(
         title=data.get("title"),
         content=data.get("content"),
         status=data.get("status", "published"),
-        author_id=session["user_id"]   # 登录后才有 user_id
+        author_id=session.get("user_id")   # 登录后才有 user_id
     )
     db.session.add(post)
     db.session.commit()
@@ -64,6 +70,11 @@ def create_post():
 @api_bp.route("/posts/<int:post_id>", methods=["GET"])
 def get_post(post_id):
     post = Post.query.get_or_404(post_id)
+
+    # 未登录用户只能看已发布文章
+    if "user_id" not in session and post.status != "published":
+        return jsonify({"message": "not found"}), 404
+
     return jsonify({
         "id": post.id,
         "title": post.title,
@@ -72,7 +83,7 @@ def get_post(post_id):
     })
 
 @api_bp.route("/posts/<int:post_id>", methods=["PUT"])
-@login_required
+@api_login_required
 def update_post(post_id):
     post = Post.query.get_or_404(post_id)
     data = request.json
@@ -85,7 +96,7 @@ def update_post(post_id):
     return jsonify({"message": "updated"}), 200
 
 @api_bp.route("/posts/<int:post_id>", methods=["DELETE"])
-@login_required
+@api_login_required
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
     db.session.delete(post)
