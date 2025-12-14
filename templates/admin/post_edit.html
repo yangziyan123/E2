@@ -4,31 +4,102 @@
 {% if mode == "new" %}新增文章{% else %}编辑文章{% endif %}
 {% endblock %}
 
+{% block style %}
+<style>
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 15px;
+        color: #34495e;
+        margin-bottom: 6px;
+        font-weight: 600;
+    }
+
+    .form-input, .form-textarea, .form-select {
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
+        border: 1px solid #dfe6e9;
+        border-radius: 6px;
+        outline: none;
+        transition: border-color 0.2s ease;
+        background: #fff;
+        box-sizing: border-box;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+        border-color: #3498db;
+    }
+
+    .form-textarea {
+        height: 220px;
+        resize: vertical;
+    }
+
+    .btn-submit {
+        padding: 10px 20px;
+        font-size: 16px;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background .2s ease;
+    }
+
+    .btn-submit:hover {
+        background: #2980b9;
+    }
+
+    .page-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 25px;
+        color: #2c3e50;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<h2>
-{% if mode == "new" %}新增文章{% else %}编辑文章{% endif %}
-</h2>
+    <div class="page-title">
+        {% if mode == "new" %}新增文章{% else %}编辑文章{% endif %}
+    </div>
 
-<form method="post">
-    <p>
-        标题：<br>
-        <input type="text" name="title" value="{{ post.title if post else '' }}" style="width: 400px;">
-    </p>
+    <form method="post">
 
-    <p>
-        内容：<br>
-        <textarea name="content" rows="10" cols="80">{{ post.content if post else '' }}</textarea>
-    </p>
+        <div class="form-group">
+            <label class="form-label">标题</label>
+            <input type="text" name="title" class="form-input"
+                   value="{{ post.title if post else '' }}" required>
+        </div>
 
-    <p>
-        状态：<br>
-        <select name="status">
-            <option value="published" {% if post and post.status=='published' %}selected{% endif %}>已发布</option>
-            <option value="draft" {% if post and post.status=='draft' %}selected{% endif %}>草稿</option>
-        </select>
-    </p>
+        <div class="form-group">
+            <label class="form-label">内容</label>
+            <textarea name="content" class="form-textarea">{{ post.content if post else '' }}</textarea>
+        </div>
 
-    <button type="submit">保存</button>
-</form>
+        <div class="form-group">
+            <label class="form-label">状态</label>
+            <select name="status" class="form-select">
+                <option value="published" 
+                    {% if post and post.status == 'published' %}selected{% endif %}>
+                    已发布
+                </option>
+                <option value="draft" 
+                    {% if post and post.status == 'draft' %}selected{% endif %}>
+                    草稿
+                </option>
+            </select>
+        </div>
 
+        <button type="submit" class="btn-submit">
+            保存文章
+        </button>
+
+    </form>
 {% endblock %}
